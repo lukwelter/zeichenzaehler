@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zeichenzähler</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #d1d5db;
+      --accent: #2563eb;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111827;
+        --card: #1f2937;
+        --text: #f9fafb;
+        --muted: #9ca3af;
+        --border: #374151;
+        --accent: #60a5fa;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 800px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 2rem;
+    }
+
+    p {
+      margin-top: 0;
+      color: var(--muted);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 260px;
+      padding: 16px;
+      font: inherit;
+      line-height: 1.5;
+      color: var(--text);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      resize: vertical;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>Zeichenzähler</h1>
+    <p>Text einfügen und sofort sehen, wie viele Zeichen und Wörter er enthält.</p>
+
+    <textarea id="text" placeholder="Hier deinen Text einfügen..."></textarea>
+
+    <section class="results" aria-live="polite">
+      <div class="card">
+        <span class="label">Zeichen</span>
+        <span class="value" id="charCount">0</span>
+      </div>
+      <div class="card">
+        <span class="label">Wörter</span>
+        <span class="value" id="wordCount">0</span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const textInput = document.getElementById('text');
+    const charCount = document.getElementById('charCount');
+    const wordCount = document.getElementById('wordCount');
+
+    function updateCounts() {
+      const text = textInput.value;
+      const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+
+      charCount.textContent = text.length;
+      wordCount.textContent = words;
+    }
+
+    textInput.addEventListener('input', updateCounts);
+
+    updateCounts();
+  </script>
+</body>
+</html>
