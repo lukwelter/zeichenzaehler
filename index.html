@@ -50,12 +50,24 @@
       padding: 24px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     }
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
 
-    h1 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 2rem;
-      text-align: center;
+    .theme-toggle {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
     }
 
     p {
@@ -110,7 +122,9 @@
 </head>
 <body>
   <main class="app">
-    <h1>Zeichenzähler</h1>
+    <div class="toolbar">
+      <button class="theme-toggle" id="themeToggle" type="button">Dunkel</button>
+    </div>
 
     <textarea id="text" placeholder="Hier deinen Text einfügen..."></textarea>
 
@@ -130,6 +144,7 @@
     const textInput = document.getElementById('text');
     const charCount = document.getElementById('charCount');
     const wordCount = document.getElementById('wordCount');
+    const themeToggle = document.getElementById('themeToggle');
 
     function updateCounts() {
       const text = textInput.value;
@@ -141,6 +156,25 @@
 
     textInput.addEventListener('input', updateCounts);
 
+    let isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    function applyTheme() {
+      document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+      document.documentElement.style.setProperty('--bg', isDark ? '#111827' : '#f4f7fb');
+      document.documentElement.style.setProperty('--card', isDark ? '#1f2937' : '#ffffff');
+      document.documentElement.style.setProperty('--text', isDark ? '#f9fafb' : '#1f2937');
+      document.documentElement.style.setProperty('--muted', isDark ? '#9ca3af' : '#6b7280');
+      document.documentElement.style.setProperty('--border', isDark ? '#374151' : '#d1d5db');
+      document.documentElement.style.setProperty('--accent', isDark ? '#60a5fa' : '#2563eb');
+      themeToggle.textContent = isDark ? 'Hell' : 'Dunkel';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      isDark = !isDark;
+      applyTheme();
+    });
+
+    applyTheme();
     updateCounts();
   </script>
 </body>
